@@ -1,0 +1,45 @@
+## Chebyshev distance (or Tchebychev distance), maximum metric, or L∞ metric. is a metric defined on a vector space where the distance between two vectors is the greatest of their differences along any coordinate dimension
+## Formula: max(|xA - xB|, |yA - yB|)
+
+!pip install yfinance --upgrade --no-cache-dir
+
+import numpy as np
+from scipy.spatial import distance
+
+import matplotlib.pyplot as plt
+
+import warnings
+warnings.filterwarnings("ignore") 
+
+# yfinance is used to fetch data 
+import yfinance as yf
+yf.pdr_override()
+
+symbol = 'AMD'
+
+start = '2018-01-01'
+end = '2021-01-01'
+
+# Read data 
+dataset = yf.download(symbol,start,end)
+
+# View Columns
+dataset.head()
+
+Open = np.array(dataset['Open'])
+Close = np.array(dataset['Adj Close'])
+High = np.array(dataset['High'])
+Low = np.array(dataset['Low'])
+
+Open
+Close
+
+distance.chebyshev(Open, Close)
+
+x = Low
+y = High
+p = np.polynomial.Chebyshev.fit(x, y, 90)
+
+plt.plot(x, y, 'r.')
+plt.plot(x, p(x), 'k-', lw=3)
+plt.show()
